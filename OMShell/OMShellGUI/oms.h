@@ -44,12 +44,32 @@
 using namespace std;
 
 
-//QT Headers
+// QT Headers
+#include <QtGlobal>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#include <QtWidgets>
+#else
+#include <QtCore/QStringList>
+#include <QtCore/QThread>
+#include <QtGui/QAction>
+#include <QtGui/QApplication>
+#include <QtGui/QFileDialog>
+#include <QtGui/QFrame>
+#include <QtGui/QKeyEvent>
+#include <QtGui/QMenu>
+#include <QtGui/QMenuBar>
+#include <QtGui/QMessageBox>
+#include <QtGui/QTextBlock>
+#include <QtGui/QScrollBar>
+#include <QtGui/QStatusBar>
+#include <QtGui/QVBoxLayout>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMainWindow>
 #include <QtGui/QTextCharFormat>
 #include <QtGui/QTextCursor>
 #include <QtGui/QPlainTextEdit>
+#include <QtCore/QSettings>
+#endif
 
 //IAEX Headers
 #include "inputcelldelegate.h"
@@ -117,6 +137,7 @@ private:
   QVBoxLayout* layout_;
   QString clipboard_;
   QString copyright_info_;
+  QSettings *mpSettings;
 
   IAEX::CommandCompletion* commandcompletion_;
   int fontSize_;
@@ -143,6 +164,12 @@ private:
   QAction* aboutOMS_;
   QAction* aboutQT_;        // Added 2006-02-21 AF
   QAction* clearWindow_;
+
+  static QString organization;
+  static QString application;
+  static QString utf8;
+
+  QSettings* getApplicationSettings();
 };
 
 //********************************

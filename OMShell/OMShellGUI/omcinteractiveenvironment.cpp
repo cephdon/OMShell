@@ -33,9 +33,15 @@
 #include <exception>
 #include <stdexcept>
 
+// QT includes
+#include <QtGlobal>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 0))
+#include <QtWidgets>
+#else
 #include <QtCore/QDir>
 #include <QtCore/QProcess>
 #include <QtGui/QMessageBox>
+#endif
 
 #include "omcinteractiveenvironment.h"
 #ifndef WIN32
@@ -124,7 +130,11 @@ namespace IAEX
 #ifdef WIN32
       omc = QString( omhome ) + "/bin/omc.exe";
 #else /* unix */
-      omc = (omhome ? QString(omhome)+"/bin/omc" : QString(CONFIG_DEFAULT_OPENMODELICAHOME) + "/bin/omc");
+      omc = (omhome ? QString(omhome)+"/bin/omc" : QString(CONFIG_DEFAULT_OPENMODELICAHOME "/bin/omc"));
+      QFileInfo checkFile(omc);
+      if (!checkFile.exists() || !checkFile.isFile()) {
+        omc = "omc";
+      }
 #endif
 
       QStringList parameters;
